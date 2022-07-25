@@ -1,0 +1,34 @@
+{   
+    "model": "interpretation",
+    "activation": "sigmoid",
+    "perturbed": 0,
+
+
+    "gpt_model_size": "gpt2",
+    
+
+    "trainset_path": "./data/dailydialog/processed/dailydialog.train",
+    "valset_path":"./data/dailydialog/processed/dailydialog.val",
+    "testset_path":"./data/dailydialog/processed/dailydialog.test",
+
+
+    "base_path": "./",
+    "model_name": "test_tesgan",
+    "history_data_name": "test_tesgan",
+    
+
+    "bert_layer": 2,
+
+
+    "batch_size": 64,
+    "epochs": 20,
+
+
+    "max_len": 64,
+    "max_s": 4,
+    "g_train_num_per_epoch": 2,
+
+
+    "print_log_interv": 10,
+    "noise_init_size": 100
+}

@@ -1,0 +1,23 @@
+{
+    "path": "/data2/junminlee/Python/Practice/TESGAN/src/config.json",
+    "model": "interpretation",
+    "activation": "sigmoid",
+    "perturbed": 1,
+    "gpt_model_size": "gpt2",
+    "trainset_path": "./data/dailydialog/processed/dailydialog.train",
+    "valset_path": "./data/dailydialog/processed/dailydialog.val",
+    "testset_path": "./data/dailydialog/processed/dailydialog.test",
+    "base_path": "./",
+    "model_name": "interp_sigmoid",
+    "history_data_name": "interp_sigmoid",
+    "bert_layer": 2,
+    "batch_size": 100,
+    "epochs": 100,
+    "max_len": 64,
+    "max_s": 4,
+    "g_train_num_per_epoch": 2,
+    "print_log_interv": 10,
+    "noise_init_size": 100,
+    "history_data_path": "./history/interp_sigmoid.pkl",
+    "model_path": "./model/interp_sigmoid/interp_sigmoid"
+}
