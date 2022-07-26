@@ -5,8 +5,8 @@
 <br>
 
 ## Introduction
-Apply Generative Adversarial Networks to synthesizing text embedding space called a seed.
-TESGAN does not explicitly refer to training data because it trains in an unsupervised way which is similar to the original [GAN framework](https://proceedings.neurips.cc/paper/2014/file/5ca3e9b122f61f8f06494c97b1afccf3-Paper.pdf).
+In this experiment, we apply the Generative Adversarial Networks to synthesizing text embedding space called a seed.
+Text Embedding Space GAN (TESGAN) does not explicitly refer to training data because it trains in an unsupervised way which is similar to the original [GAN framework](https://proceedings.neurips.cc/paper/2014/file/5ca3e9b122f61f8f06494c97b1afccf3-Paper.pdf).
 Thus, data memorization does not appear when synthesizing sentences.
 Additionally, unlike previous studies, TESGAN does not generate discrete tokens, but rather creates text embedding space, thereby solving the gradient backpropagation problem argued in [SeqGAN](https://github.com/LantaoYu/SeqGAN).
 <br>
