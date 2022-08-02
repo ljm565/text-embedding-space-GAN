@@ -59,6 +59,7 @@ class Trainer:
                 self.discriminator_bert = Discriminator_BERT(self.config).to(self.device)
                 self.discriminator_lstm = Discriminator_LSTM().to(self.device)
                 self.discriminator_bert.apply(weights_init)
+                self.discriminator_lstm.apply(weights_init)
 
         if self.state == 'train':
             self.lm_loss = nn.CrossEntropyLoss(ignore_index=self.pad_idx)
