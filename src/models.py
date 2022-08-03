@@ -40,12 +40,13 @@ class InterpretationModel(nn.Module):
 
 
 class Generator(nn.Module):
-    def __init__(self, config):
+    def __init__(self, config, device):
         super(Generator, self).__init__()
         self.noise_init_size = config.noise_init_size
         self.max_len = config.max_len
         self.activation = config.activation
         self.perturbed = config.perturbed
+        self.device = device
         self.layers = [
             nn.ConvTranspose1d(in_channels=self.noise_init_size, out_channels=128, kernel_size=256, stride=1,
                                padding=0, bias=True),
@@ -68,7 +69,7 @@ class Generator(nn.Module):
         x = x.view(b_size, self.max_len, -1)
 
         if self.perturbed:
-            z = torch.randn(b_size, self.max_len, 768).to(torch.device('cuda:0'))
+            z = torch.randn(b_size, self.max_len, 768).to(self.device)
             x = x + z
         return x
 

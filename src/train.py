@@ -53,7 +53,7 @@ class Trainer:
             for p in self.interpretationModel.parameters():
                 p.requires_grad = False
 
-            self.generator = Generator(self.config).to(self.device)
+            self.generator = Generator(self.config, self.device).to(self.device)
             self.generator.apply(weights_init)
             if self.state == 'train':
                 self.discriminator_bert = Discriminator_BERT(self.config).to(self.device)
