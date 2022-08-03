@@ -58,7 +58,7 @@ def fbd(args):
         np.random.seed(999)
         fixed_noise = make_noise(n_samples, config.noise_init_size)
         fixed_noise = [fixed_noise[i * 100:(i + 1) * 100] for i in range(int(n_samples / 100))]
-        generator = Generator(config).to(device)
+        generator = Generator(config, device).to(device)
         base_path = './model/' + model
         model_path = [base_path + '/' + model + '_' + str(i + 1) + '.pt' for i in range(len(os.listdir(base_path)) - 1)]
 
@@ -149,7 +149,7 @@ def msj(args):
         np.random.seed(999)
         fixed_noise = make_noise(n_samples, config.noise_init_size)
         fixed_noise = [fixed_noise[i * 100:(i + 1) * 100] for i in range(int(n_samples / 100))]
-        generator = Generator(config).to(device)
+        generator = Generator(config, device).to(device)
         base_path = './model/' + model
         model_path = [base_path + '/' + model + '_' + str(i + 1) + '.pt' for i in range(len(os.listdir(base_path)) - 1)]
 
@@ -245,7 +245,7 @@ def sdr(args):
         np.random.seed(999)
         fixed_noise = make_noise(n_samples, config.noise_init_size)
         fixed_noise = [fixed_noise[i * 100:(i + 1) * 100] for i in range(int(n_samples / 100))]
-        generator = Generator(config).to(device)
+        generator = Generator(config, device).to(device)
         base_path = './model/' + model
         model_path = [base_path + '/' + model + '_' + str(i + 1) + '.pt' for i in range(len(os.listdir(base_path)) - 1)]
 

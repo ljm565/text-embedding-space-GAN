@@ -276,7 +276,7 @@ class TESGANTrainer(Trainer):
         n_samples = 1000
         fixed_noise = make_noise(n_samples, self.config.noise_init_size)
         fixed_noise = [fixed_noise[i * 100:(i + 1) * 100] for i in range(int(n_samples / 100))]
-        generator = Generator(self.config).to(self.device)
+        generator = Generator(self.config, self.device).to(self.device)
 
         # synthesize sentences
         check_point = torch.load(model_path, map_location=self.device)
