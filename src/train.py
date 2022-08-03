@@ -151,6 +151,13 @@ class TESGANTrainer(Trainer):
                         sod_f_acc = torch.sum(torch.where(lstm_out > 0.5, 1, 0) == target) / b_size
                         D_loss = ssd_r_loss + ssd_f_loss + sod_r_loss + sod_f_loss
 
+                        # for stable training
+                        if sod_f_loss.item() == 100 and epoch == 0:
+                            self.discriminator_lstm = Discriminator_LSTM(self.device).to(self.device)
+                            self.discriminator_lstm.apply(weights_init)
+                            self.discriminator_lstm_optimizer = optim.Adam(self.discriminator_lstm.parameters(), lr=0.001)
+                            continue
+
                         if phase == 'train' and epoch % 2 == 0:
                             D_loss.backward()
                             self.discriminator_bert_optimizer.step()
@@ -259,10 +266,8 @@ class TESGANTrainer(Trainer):
                     print()
 
             # save the last model
-            save_checkpoint(self.model_path + '_' + str(epoch + 1) + '.pt', {'generator': self.generator.state_dict(),
-                                                                             'discriminator': self.discriminator_bert.state_dict()},
-                            {'generator': self.generator_optimizer.state_dict(),
-                             'discriminator': self.discriminator_bert_optimizer.state_dict()})
+            save_checkpoint(self.model_path + '_' + str(epoch + 1) + '.pt', {'generator': self.generator.state_dict()},
+                            {'generator': self.generator_optimizer.state_dict()})
             print("training time :", time.time() - start)
             print('\n' * 3)
 
