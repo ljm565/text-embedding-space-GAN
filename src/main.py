@@ -45,15 +45,17 @@ def main(config_path: Config, args: ArgumentParser):
 
         # training
         print('Start training...\n')
-        train_loss_history, val_loss_history, score_history, best_scores = trainer.train()
-        history_data = {'train_loss_history': train_loss_history, 'val_loss_history': val_loss_history,
-                        'score_history': score_history, 'best_scores': best_scores}
+        try:
+            train_loss_history, val_loss_history, score_history, best_scores = trainer.train()
+            history_data = {'train_loss_history': train_loss_history, 'val_loss_history': val_loss_history,
+                            'score_history': score_history, 'best_scores': best_scores}
 
-        # saving history data
-        print('Saving the loss related data...')
-        with open(history_data_path, 'wb') as f:
-            pickle.dump(history_data, f)
-
+            # saving history data
+            print('Saving the loss related data...')
+            with open(history_data_path, 'wb') as f:
+                pickle.dump(history_data, f)
+        except TypeError:
+            print('TESGAN training finished..')
 
     elif args.mode == 'syn':
         # path needed
