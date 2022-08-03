@@ -89,8 +89,9 @@ class Discriminator_BERT(nn.Module):
 
 
 class Discriminator_LSTM(nn.Module):
-    def __init__(self):
+    def __init__(self, device):
         super(Discriminator_LSTM, self).__init__()
+        self.device = device
         self.lstm = nn.LSTM(input_size=768, hidden_size=768, num_layers=2, batch_first=True, bidirectional=True)
         self.fc = nn.Sequential(
             nn.Linear(768 * 4, 1),
@@ -98,8 +99,8 @@ class Discriminator_LSTM(nn.Module):
         )
 
     def init_hidden(self, b_size):
-        h0 = torch.zeros(2 * 2, b_size, 768).to(torch.device('cuda:0'))
-        c0 = torch.zeros(2 * 2, b_size, 768).to(torch.device('cuda:0'))
+        h0 = torch.zeros(2 * 2, b_size, 768).to(self.device)
+        c0 = torch.zeros(2 * 2, b_size, 768).to(self.device)
         return h0, c0
 
     def forward(self, input):

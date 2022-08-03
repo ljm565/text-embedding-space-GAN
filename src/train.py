@@ -57,7 +57,7 @@ class Trainer:
             self.generator.apply(weights_init)
             if self.state == 'train':
                 self.discriminator_bert = Discriminator_BERT(self.config).to(self.device)
-                self.discriminator_lstm = Discriminator_LSTM().to(self.device)
+                self.discriminator_lstm = Discriminator_LSTM(self.device).to(self.device)
                 self.discriminator_bert.apply(weights_init)
                 self.discriminator_lstm.apply(weights_init)
 
