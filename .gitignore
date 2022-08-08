@@ -8,18 +8,19 @@ model/*none
 model/*tanh
 
 model/interp_sigmoid/*
-# !model/interp_sigmoid/*bleu4.pt
 !model/interp_sigmoid/*.json
 
 model/tesgan_sigmoid/*
-# !model/tesgan_sigmoid/*17.pt
 !model/tesgan_sigmoid/*.json
 
 model/tesganP_sigmoid/*
-# !model/tesganP_sigmoid/*10.pt
 !model/tesganP_sigmoid/*.json
 
 score/*tanh*
 score/*none*
 
 etc/draw*
+
+syn/
+!syn/tesgan_sigmoid.txt
+!syn/tesganP_sigmoid.txt
