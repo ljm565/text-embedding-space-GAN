@@ -83,8 +83,7 @@ def save_model(model_path, score_curr, score_best, score_type, model, optimizer,
 def saving(model_path, score_type, model, optimizer, epoch):
     try:
         old_model = list(
-            filter(lambda x: x.endswith(score_type + '.pt'), os.listdir(model_path[:model_path.rfind('/') + 1] + '/')))[
-            0]
+            filter(lambda x: x.endswith(score_type + '.pt'), os.listdir(model_path[:model_path.rfind('/') + 1] + '/')))[0]
         old_model = model_path[:model_path.rfind('/') + 1] + '/' + old_model
         os.remove(old_model)
     except IndexError:

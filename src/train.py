@@ -71,8 +71,7 @@ class Trainer:
             self.interpretationModel_optimizer = optim.Adam(self.interpretationModel.parameters(), lr=0.001)
             if self.config.model == 'tesgan':
                 self.generator_optimizer = optim.Adam(self.generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
-                self.discriminator_bert_optimizer = optim.Adam(self.discriminator_bert.parameters(), lr=0.0005,
-                                                               betas=(0.5, 0.999))
+                self.discriminator_bert_optimizer = optim.Adam(self.discriminator_bert.parameters(), lr=0.0005, betas=(0.5, 0.999))
                 self.discriminator_lstm_optimizer = optim.Adam(self.discriminator_lstm.parameters(), lr=0.001)
 
 
@@ -289,8 +288,8 @@ class TESGANTrainer(Trainer):
         generator.eval()
         fake = sum([[self.tokenizer.decode(
             greedy_search(self.interpretationModel.model, self.tokenizer, generator(n.to(self.device))[j].unsqueeze(0),
-                          self.config.max_len, self.config.activation, self.device, True)[0, self.config.max_len - 1:]) for j in
-                     range(n.size(0))] for n in fixed_noise], [])
+                          self.config.max_len, self.config.activation, self.device, True)[0, self.config.max_len - 1:])
+                          for j in range(n.size(0))] for n in fixed_noise], [])
         with open('syn/' + file_name + '.txt', 'w') as f:
             for s in fake:
                 f.write(s + '\n')
