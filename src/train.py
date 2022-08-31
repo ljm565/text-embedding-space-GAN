@@ -303,8 +303,7 @@ class InterpretationTrainer(Trainer):
         best_ppl, best_bleu_2, best_bleu_4, best_nist_2, best_nist_4 = float('inf'), 0, 0, 0, 0
         loss_key = ['interp_loss']
         score_key = ['bleu-2', 'bleu-4', 'nist-2', 'nist-4']
-        train_loss_history, val_loss_history, score_history = {k: [] for k in loss_key}, {k: [] for k in loss_key}, {
-            k: [] for k in score_key}
+        train_loss_history, val_loss_history, score_history = {k: [] for k in loss_key}, {k: [] for k in loss_key}, {k: [] for k in score_key}
 
         for epoch in range(self.epochs):
             start = time.time()
@@ -326,8 +325,7 @@ class InterpretationTrainer(Trainer):
 
                     with torch.set_grad_enabled(phase == 'train'):
                         _, lm_output = self.interpretationModel(input)
-                        interp_loss = self.lm_loss(lm_output[:, :-1, :].reshape(-1, lm_output.size(-1)),
-                                                   input[:, 1:].reshape(-1))
+                        interp_loss = self.lm_loss(lm_output[:, :-1, :].reshape(-1, lm_output.size(-1)), input[:, 1:].reshape(-1))
                         if phase == 'train':
                             interp_loss.backward()
                             self.interpretationModel_optimizer.step()
