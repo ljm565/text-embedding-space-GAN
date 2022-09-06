@@ -83,7 +83,3 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
 ## Acknowledgement
 * [multiset_distances.py](https://github.com/ljm565/TESGAN/blob/master/etc/multiset_distances.py) and [bert_distances.py](https://github.com/ljm565/TESGAN/blob/master/etc/bert_distances.py) is based on [IAmS4n](https://github.com/IAmS4n/TextGenerationEvaluationMetrics). Many thanks for the authors.
 * [DailyDialog Dataset](https://github.com/facebookresearch/EmpatheticDialogues) were used in this experiment. Many thanks for the authors.
-
-<!-- ## License
-© 2022. Jun-Min Lee. All rights reserved.<br>
-ljm56897@gmail.com, ljm565@kaist.ac.kr, ljm565@naver.com -->
