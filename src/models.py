@@ -63,7 +63,6 @@ class Generator(nn.Module):
 
     def forward(self, x):
         b_size = x.size(0)
-        x = x.squeeze(-1)
         x = self.generator(x)
 
         if self.perturbed:

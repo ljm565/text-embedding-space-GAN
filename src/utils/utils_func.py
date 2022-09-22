@@ -208,7 +208,7 @@ def prob_search(model, tokenizer, input, max_len, act, device, is_emb=False):
 
 def make_noise(b_size, init_size):
     t = [torch.Tensor(np.random.uniform(-10, 10, init_size)) for _ in range(b_size)]
-    return torch.cat(tuple(t), dim=0).view(b_size, init_size, 1, 1)
+    return torch.cat(tuple(t), dim=0).view(b_size, init_size, 1)
 
 
 def find_detail_model(base_path, activation, score='bleu4'):
