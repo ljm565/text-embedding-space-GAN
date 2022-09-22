@@ -64,9 +64,7 @@ class Generator(nn.Module):
     def forward(self, x):
         b_size = x.size(0)
         x = x.squeeze(-1)
-
-        x = self.generator(x).squeeze(1)
-        x = x.view(b_size, self.max_len, -1)
+        x = self.generator(x)
 
         if self.perturbed:
             z = torch.randn(b_size, self.max_len, 768).to(self.device)
