@@ -5,9 +5,8 @@ from utils.utils_func import *
 
 
 class InterpretationModel(nn.Module):
-    def __init__(self, config, pad_idx, device):
+    def __init__(self, config, device):
         super(InterpretationModel, self).__init__()
-        self.pad_idx = pad_idx
         self.device = device
         self.gpt_model_size = config.gpt_model_size
         self.model = GPT2LMHeadModel.from_pretrained(self.gpt_model_size, output_hidden_states=True)

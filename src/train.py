@@ -44,7 +44,7 @@ class Trainer:
 
         # model and others
         self.pad_idx = self.tokenizer.pad_token_id
-        self.interpretationModel = InterpretationModel(self.config, pad_idx=self.pad_idx, device=self.device).to(
+        self.interpretationModel = InterpretationModel(self.config, device=self.device).to(
             self.device)
         if self.config.model == 'tesgan':
             self.detail_model = find_detail_model(self.config.base_path, self.config.activation)

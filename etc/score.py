@@ -50,7 +50,7 @@ def fbd(args):
     if model not in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu']:
         torch.manual_seed(999)
         # load seed interpretation model
-        gpt2 = InterpretationModel(config, pad_idx=tokenizer.pad_token_id, device=device).to(device)
+        gpt2 = InterpretationModel(config, device=device).to(device)
         check_point = torch.load(gpt2_path, map_location=device)
         gpt2.load_state_dict(check_point['model']['gpt2'])
 
@@ -141,7 +141,7 @@ def msj(args):
     if model not in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu']:
         torch.manual_seed(999)
         # load seed interpretation model
-        gpt2 = InterpretationModel(config, pad_idx=tokenizer.pad_token_id, device=device).to(device)
+        gpt2 = InterpretationModel(config, device=device).to(device)
         check_point = torch.load(gpt2_path, map_location=device)
         gpt2.load_state_dict(check_point['model']['gpt2'])
 
@@ -237,7 +237,7 @@ def sdr(args):
     if model not in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu']:
         torch.manual_seed(999)
         # load seed interpretation model
-        gpt2 = InterpretationModel(config, pad_idx=tokenizer.pad_token_id, device=device).to(device)
+        gpt2 = InterpretationModel(config, device=device).to(device)
         check_point = torch.load(gpt2_path, map_location=device)
         gpt2.load_state_dict(check_point['model']['gpt2'])
 
