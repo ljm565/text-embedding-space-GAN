@@ -109,7 +109,6 @@ class TESGANTrainer(Trainer):
                 for i, (input) in enumerate(self.dataloaders[phase]):
                     b_size = input.size(0)
                     input = input.to(self.device)
-                    self.interpretationModel_optimizer.zero_grad()
                     self.generator_optimizer.zero_grad()
                     self.discriminator_bert_optimizer.zero_grad()
                     self.discriminator_lstm_optimizer.zero_grad()
