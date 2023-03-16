@@ -20,13 +20,13 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
     The Multi-sets Jaccard (MSJ) calculates the similarity between the generative model and the real distribution by comparing the generated text samples.
     MS-Jaccard focuses on the similarity of the n-grams frequencies between the two sets with considering the average frequency of the generated n-gram per sentence and a higher value means better.
 
-* ### Synthesis and Diversity Ratio (SDR)
-    We propose the Synthesis and Diversity Ratio (SDR) to evaluate the data memorization ratio and synthetic diversity.
-    SDR is calculated as the harmonic mean of the ratio where data memorization does not occur and the ratio of diversity.
+* ### Synthesis and Diversity Ratio (DSR)
+    We calculate Data Synthesis Ratio (DSR) to evaluate the data memorization ratio and synthetic diversity.
+    DSR is calculated as the harmonic mean of the ratio where data memorization does not occur and the ratio of diversity.
     A higher value means better.
 
 ## Result
-* ### FBD, MSJ, SDR Results
+* ### FBD, MSJ, DSR Results
     ![results1](result_figure/figure1.jpg)
     ![results2](result_figure/figure2.png)
 

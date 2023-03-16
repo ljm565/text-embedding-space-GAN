@@ -207,7 +207,7 @@ def msj(args):
             pickle.dump(scores, f)
 
 
-def sdr(args):
+def dsr(args):
     # path needed
     model = args.model
     trainset_path = "./data/dailydialog/processed/dailydialog.train"
@@ -320,8 +320,8 @@ if __name__ == '__main__':
         fbd(args)
     elif args.type.lower() == 'msj':
         msj(args)
-    elif args.type.lower() == 'sdr':
-        sdr(args)
+    elif args.type.lower() == 'dsr':
+        dsr(args)
     else:
-        print('FBD, MSJ, SDR are possible, please check...')
+        print('FBD, MSJ, DSR are possible, please check...')
         assert AssertionError

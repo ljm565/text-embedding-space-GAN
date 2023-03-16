@@ -18,9 +18,13 @@ model/tesganP_sigmoid/*
 
 score/*tanh*
 score/*none*
+score_appendixE/
+score_ablation_study/
 
 etc/draw*
 
 syn/
 !syn/tesgan_sigmoid.txt
 !syn/tesganP_sigmoid.txt
+
+images/
