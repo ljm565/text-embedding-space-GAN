@@ -5,10 +5,12 @@ import pickle
 import numpy as np
 from tqdm import tqdm
 from argparse import ArgumentParser
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
 sys.path.append('src/')
 
 import torch
+import torch.nn as nn
 
 from utils.utils_func import *
 from bert_distances import FBD
@@ -309,6 +311,86 @@ def dsr(args):
             pickle.dump(repeat_rate, f)
 
 
+
+def lm(args):
+    # path needed
+    model = args.model
+
+    # init
+    score_type = args.type
+    n_samples = 1000
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    
+    # define model for LM score
+    tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+    lm_model = GPT2LMHeadModel.from_pretrained('gpt2')
+    lm_model.eval()
+    criterion = nn.CrossEntropyLoss()
+
+    # define required
+    random.seed(999)
+    total_loss, total_num = 0, 0
+
+    ########################### case of ours ###########################
+    if model not in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu']:
+        # load synthesized samples
+        path = './syn/' + model + '.txt'
+        with open(path, 'r') as f:
+            data = f.readlines()
+        
+        total_loss = 0
+        total_num = 0
+        data = [d.strip() for d in data]
+        for s in tqdm(data):
+            try:
+                s = torch.LongTensor(tokenizer.encode(s)).unsqueeze(0)
+                output = lm_model(s).logits
+                loss = criterion(output[:, :-1, :].reshape(-1, output.size(-1)), s[:, 1:].reshape(-1))
+                if not np.isnan(loss.item()):
+                    total_loss += loss.item()
+                    total_num += 1
+            except:
+                continue
+        lm_score = total_loss/total_num
+        print(lm_score)
+
+        # save the data
+        save_path = 'score/' + model + '_' + score_type.upper() + '.pkl'
+        with open(save_path, 'wb') as f:
+            pickle.dump(lm_score, f)
+
+
+    ########################### case of others ###########################
+    elif model in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu']:
+        names = {'seqgan': 'SeqGAN', 'rankgan': 'RankGAN', 'maligan': 'MaliGAN', 'mle': 'MLE', 'pgbleu': 'PG_Bleu'}
+        
+        # load synthesized samples
+        path = './model/' + model + '/generator_sample0.txt'
+        with open(path, 'r') as f:
+            data = f.readlines()
+        data = random.sample(data, 1000)
+        data = [d.strip() for d in data]
+
+        # calculate lm score
+        for tok in tqdm(data):
+            tok = list(filter(lambda x: x != 50259, map(int, tok.split())))
+            s = tokenizer.decode(tok)
+            s = torch.LongTensor(tokenizer.encode(s)).unsqueeze(0)
+            output = lm_model(s).logits
+            loss = criterion(output[:, :-1, :].reshape(-1, output.size(-1)), s[:, 1:].reshape(-1))
+            if not np.isnan(loss.item()):
+                total_loss += loss.item()
+                total_num += 1
+        
+        lm_score = total_loss / total_num
+        print(lm_score)
+        
+        # save the data
+        save_path = 'score/' + names[model] + '_' + score_type.upper() + '.pkl'
+        with open(save_path, 'wb') as f:
+            pickle.dump(lm_score, f)
+
+
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('-m', '--model', type=str, required=True)
@@ -324,6 +406,8 @@ if __name__ == '__main__':
         msj(args)
     elif args.type.lower() == 'dsr':
         dsr(args)
+    elif args.type.lower() == 'lm':
+        lm(args)
     else:
-        print('FBD, MSJ, DSR are possible, please check...')
+        print('FBD, MSJ, DSR, LM are possible, please check...')
         assert AssertionError
