@@ -1,9 +1,10 @@
-import torch
-from nltk.translate.bleu_score import corpus_bleu
-from nltk.translate.nist_score import corpus_nist
+import os
 import pickle
 import numpy as np
-import os
+from nltk.translate.bleu_score import corpus_bleu
+from nltk.translate.nist_score import corpus_nist
+
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 

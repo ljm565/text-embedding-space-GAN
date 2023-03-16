@@ -1,20 +1,22 @@
-import sys
 import os
-from tqdm import tqdm
+import sys
 import random
 import pickle
+import numpy as np
+from tqdm import tqdm
 from argparse import ArgumentParser
 
 sys.path.append('src/')
 
 import torch
-import numpy as np
-from utils.config import Config
-from models import InterpretationModel, Generator
-from tokenizer import Tokenizer
+
 from utils.utils_func import *
 from bert_distances import FBD
+from utils.config import Config
+from tokenizer import Tokenizer
 from multiset_distances import MultisetDistances
+from models import InterpretationModel, Generator
+
 
 
 def fbd(args):
