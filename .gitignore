@@ -6,6 +6,7 @@ logs/
 
 model/*none
 model/*tanh
+model/interp_layer*
 
 model/interp_sigmoid/*
 !model/interp_sigmoid/*.json

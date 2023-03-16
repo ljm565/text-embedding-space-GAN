@@ -1,16 +1,17 @@
+import time
+import numpy as np
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
-import numpy as np
-import time
 
+from models import *
 from utils.config import Config
 from tokenizer import Tokenizer
 from utils.utils_func import *
 from utils.utils_data import DLoader4TESGAN, DLoader4Interpretation
-from models import InterpretationModel, Generator, Discriminator_BERT, Discriminator_LSTM
-import torch.nn.functional as F
 
 
 class Trainer:
@@ -44,10 +45,10 @@ class Trainer:
 
         # model and others
         self.pad_idx = self.tokenizer.pad_token_id
-        self.interpretationModel = InterpretationModel(self.config, device=self.device).to(
-            self.device)
+        self.interpretationModel = InterpretationModel(self.config, device=self.device).to(self.device) if self.config.gpt_model_size == 'gpt2'\
+            else InterpretationModelSmall(self.config, device=self.device).to(self.device)
         if self.config.model == 'tesgan':
-            self.detail_model = find_detail_model(self.config.base_path, self.config.activation)
+            self.detail_model = find_detail_model(self.config.base_path, self.config.activation, self.config.gpt_model_size)
             self.check_point = torch.load(self.detail_model, map_location=self.device)
             self.interpretationModel.load_state_dict(self.check_point['model']['gpt2'])
             for p in self.interpretationModel.parameters():

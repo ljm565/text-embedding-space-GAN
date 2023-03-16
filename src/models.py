@@ -1,6 +1,8 @@
-from transformers import GPT2LMHeadModel, BertForNextSentencePrediction, BertConfig
 import torch
 import torch.nn as nn
+
+from transformers import GPT2LMHeadModel, BertForNextSentencePrediction, BertConfig, GPT2Config
+
 from utils.utils_func import *
 
 
@@ -107,3 +109,29 @@ class Discriminator_LSTM(nn.Module):
         lstm_out = torch.cat((lstm_out[:, 0, :], lstm_out[:, -1, :]), dim=-1)
         lstm_out = self.fc(lstm_out).squeeze()
         return lstm_out
+
+
+
+class InterpretationModelSmall(nn.Module):
+    def __init__(self, config, device):
+        super(InterpretationModelSmall, self).__init__()
+        self.device = device
+        configuration = GPT2Config(vocab_size=config.vocab_size, n_layer=int(config.gpt_model_size))
+        self.model = GPT2LMHeadModel(configuration)
+        self.sigmoid = nn.Sigmoid()
+        self.max_len = config.max_len
+
+    def forward(self, input, emb=False):
+        real_data = None
+
+        if emb == False:
+            w_emb = self.model.transformer.wte(input)
+            p_emb = self.model.transformer.wpe(torch.arange(self.max_len).to(self.device)).unsqueeze(0)
+            real_data = self.sigmoid(w_emb + p_emb)
+
+        for i, l in enumerate(self.model.transformer.h):
+            vocab_output = l(input if emb else real_data)[0] if i == 0 else l(vocab_output)[0]
+        vocab_output = self.model.transformer.ln_f(vocab_output)
+        vocab_output = self.model.lm_head(vocab_output)
+
+        return real_data, vocab_output
