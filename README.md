@@ -14,20 +14,23 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
 ## Metric
 * ### [Fréchet BERT Distance (FBD)](https://github.com/IAmS4n/TextGenerationEvaluationMetrics)
     We use a Fréchet BERT Distance (FBD) for comparing the results.
-    The FBD score calculates the quality and diversity of generated sentences, and a lower value means better.
+    The FBD calculates the quality and diversity of generated sentences, and a lower value means better.
 
 * ### [Multi-sets Jaccard (MSJ)](https://github.com/IAmS4n/TextGenerationEvaluationMetrics)
     The Multi-sets Jaccard (MSJ) calculates the similarity between the generative model and the real distribution by comparing the generated text samples.
     MS-Jaccard focuses on the similarity of the n-grams frequencies between the two sets with considering the average frequency of the generated n-gram per sentence and a higher value means better.
 
-* ### Synthesis and Diversity Ratio (DSR)
+* ### [Language Model score (LM)](https://github.com/pclucas14/GansFallingShort)
+    LM measures generated sample quality which means that scores of the bad samples are poor under a well-trained language model.
+
+* ### Data Synthesis Ratio (DSR)
     We calculate Data Synthesis Ratio (DSR) to evaluate the data memorization ratio and synthetic diversity.
     DSR is calculated as the harmonic mean of the ratio where data memorization does not occur and the ratio of diversity.
     A higher value means better.
 
 ## Result
-* ### FBD, MSJ, DSR Results
-    ![results1](result_figure/figure1.jpg)
+* ### FBD, MSJ, ML, DSR Results
+    ![results1](result_figure/figure1.png)
     ![results2](result_figure/figure2.png)
 
 * ### Synthesized Sentences
