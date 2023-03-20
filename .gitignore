@@ -7,6 +7,7 @@ logs/
 model/*none
 model/*tanh
 model/interp_layer*
+model/tesgan_without*
 
 model/interp_sigmoid/*
 !model/interp_sigmoid/*.json
@@ -19,8 +20,9 @@ model/tesganP_sigmoid/*
 
 score/*tanh*
 score/*none*
+score/tesgan_without*
 score_appendixE/
-score_ablation_study/
+score_caseStudy/
 
 etc/draw*
 
