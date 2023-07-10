@@ -3,6 +3,7 @@
 * Python 3.6.9
 * PyTorch 1.10.1+cu113
 <br>
+
 ## Paper
 * [TESGAN paper](https://arxiv.org/abs/2306.17181)
 
