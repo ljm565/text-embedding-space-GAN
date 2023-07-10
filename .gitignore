@@ -6,6 +6,12 @@ __pycache__/
 logs/
 score/
 
+model/maligan
+model/mle
+model/pgbleu
+model/seqgan
+model/rankgan
+
 model/*none
 model/*tanh
 model/interp_layer*
