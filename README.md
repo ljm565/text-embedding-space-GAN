@@ -4,7 +4,7 @@
 * PyTorch 1.10.1+cu113
 <br>
 ## Paper
-link: https://arxiv.org/abs/2306.17181
+* [TESGAN paper](https://arxiv.org/abs/2306.17181)
 
 ## Introduction
 In this experiment, we apply the Generative Adversarial Networks to synthesizing text embedding space called a seed.
