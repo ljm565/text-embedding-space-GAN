@@ -1,8 +1,10 @@
 .vscode/
 __pycache__/
 .DS_Store
+*.ipynb
 
 logs/
+score/
 
 model/*none
 model/*tanh
