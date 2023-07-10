@@ -3,6 +3,8 @@
 * Python 3.6.9
 * PyTorch 1.10.1+cu113
 <br>
+## Paper
+link: https://arxiv.org/abs/2306.17181
 
 ## Introduction
 In this experiment, we apply the Generative Adversarial Networks to synthesizing text embedding space called a seed.
@@ -28,29 +30,6 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
     DSR is calculated as the harmonic mean of the ratio where data memorization does not occur and the ratio of diversity.
     A higher value means better.
 
-## Result
-* ### FBD, MSJ, ML, DSR Results
-    ![results1](result_figure/figure1.png)
-    ![results2](result_figure/figure2.png)
-
-* ### Synthesized Sentences
-    * #### TESGAN
-        ```
-        I’m so glad you finally got on the train.
-        I don’t have two cameras and I have a parking card.
-        Yeah. You mean the network connection?
-        What happened?
-        So you have to wait for a while.
-        ```
-
-    * #### P-TESGAN (Perturbed TESGAN)
-        ```
-        Hello, Mr. Smith. I’m Mary.
-        I just want to tell you the truth.
-        It’s the end of the world.
-        What do you want to do in this company?
-        He just broke up with Ann.
-        ```
 
 ## Testing
 * ### Seed Interpretation Model
