@@ -36,6 +36,8 @@ score_caseStudy/
 score_SEMStudy/
 
 etc/draw*
+etc/download*
+etc/make*
 
 syn/
 !syn/tesgan_sigmoid.txt
