@@ -1,10 +1,13 @@
-import torch
+import os
+import json
 import pickle
 from argparse import ArgumentParser
-import os
-from train import TESGANTrainer, InterpretationTrainer
+
+import torch
+
 from utils.config import Config
-import json
+from train import TESGANTrainer, InterpretationTrainer
+
 
 
 def main(config_path: Config, args: ArgumentParser):
@@ -38,7 +41,7 @@ def main(config_path: Config, args: ArgumentParser):
         # types of training model
         if config.model.lower() == 'tesgan':
             config.model = 'tesgan'
-            trainer = TESGANTrainer(config, device, args.mode)
+            trainer = TESGANTrainer(config, device, args.mode, args.interp)
         elif config.model.lower() == 'interpretation':
             config.model = 'interpretation'
             trainer = InterpretationTrainer(config, device, args.mode)
@@ -69,7 +72,7 @@ def main(config_path: Config, args: ArgumentParser):
         config = Config(config_path)
 
         # synthesizing
-        trainer = TESGANTrainer(config, device, args.mode)
+        trainer = TESGANTrainer(config, device, args.mode, args.interp)
         trainer.syn(model_path, folder_name)
 
 
@@ -80,7 +83,8 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('-d', '--device', type=str, required=True, choices=['cpu', 'gpu'])
     parser.add_argument('-m', '--mode', type=str, required=True, choices=['train', 'syn'])
-    parser.add_argument('-n', '--name', type=str, required=False)
+    parser.add_argument('-n', '--tesgan_name', type=str, required=False)
+    parser.add_argument('--interp', type=str, required=False)
     args = parser.parse_args()
 
     main(path, args)

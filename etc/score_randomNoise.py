@@ -38,7 +38,7 @@ def fbd(args):
         config = Config('src/config.json')
     tokenizer = Tokenizer(config).pretrained_tokenizer
     config.vocab_size = len(tokenizer)
-    gpt2_path = find_detail_model(config.base_path, args.activation, config.gpt_model_size)
+    gpt2_path = find_detail_model(config.base_path, args.interp)
 
     # collect all sentences regardless dataset
     random.seed(999)
@@ -93,7 +93,7 @@ def msj(args):
         config = Config('src/config.json')
     tokenizer = Tokenizer(config).pretrained_tokenizer
     config.vocab_size = len(tokenizer)
-    gpt2_path = find_detail_model(config.base_path, args.activation, config.gpt_model_size)
+    gpt2_path = find_detail_model(config.base_path, args.interp)
 
     # collect all sentences in test set
     random.seed(999)
@@ -151,7 +151,7 @@ def dsr(args):
         config = Config('src/config.json')
     tokenizer = Tokenizer(config).pretrained_tokenizer
     config.vocab_size = len(tokenizer)
-    gpt2_path = find_detail_model(config.base_path, args.activation, config.gpt_model_size)
+    gpt2_path = find_detail_model(config.base_path, args.interp)
 
     # collect all sentences in training set
     random.seed(999)
@@ -278,6 +278,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--type', type=str, required=True)
     parser.add_argument('-a', '--activation', default='sigmoid', type=str, required=False,
                         choices=['sigmoid', 'tanh', 'none'])
+    parser.add_argument('--interp', type=str, required=True)
     args = parser.parse_args()
 
     assert os.path.isdir('model/' + args.model)

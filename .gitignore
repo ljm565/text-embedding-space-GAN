@@ -5,6 +5,7 @@ __pycache__/
 
 logs/
 score/
+data/imdb/
 
 model/maligan
 model/mle
@@ -15,6 +16,7 @@ model/rankgan
 model/*none
 model/*tanh
 model/interp_layer*
+model/*big*
 model/tesgan_without*
 
 model/interp_sigmoid/*

@@ -212,14 +212,10 @@ def make_noise(b_size, init_size):
     return torch.cat(tuple(t), dim=0).view(b_size, init_size, 1)
 
 
-def find_detail_model(base_path, activation, model_size, score='bleu4'):
+def find_detail_model(base_path, interp, score='bleu4'):
     assert score in ['ppl', 'bleu2', 'bleu4', 'nist2', 'nist4', 'last']
-    activation = activation.lower()
 
-    try:
-        base_path = base_path + 'model/' + 'interp_layer' + str(int(model_size)) + '_' + activation + '/'
-        detail_path = base_path + list(filter(lambda x: x.endswith(score + '.pt'), os.listdir(base_path)))[0]
-    except ValueError:    
-        base_path = base_path + 'model/' + 'interp_' + activation + '/'
-        detail_path = base_path + list(filter(lambda x: x.endswith(score + '.pt'), os.listdir(base_path)))[0]
+    base_path = os.path.join(*[base_path, 'model', interp]) + '/'
+    detail_path = base_path + list(filter(lambda x: x.endswith(score + '.pt'), os.listdir(base_path)))[0]
+
     return detail_path

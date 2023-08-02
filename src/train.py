@@ -15,7 +15,7 @@ from utils.utils_data import DLoader4TESGAN, DLoader4Interpretation
 
 
 class Trainer:
-    def __init__(self, config: Config, device: str, state: str):
+    def __init__(self, config: Config, device: str, state: str, interp_name=None):
         self.config = config
         self.device = device
         self.state = state
@@ -48,7 +48,8 @@ class Trainer:
         self.interpretationModel = InterpretationModel(self.config, device=self.device).to(self.device) if self.config.gpt_model_size == 'gpt2'\
             else InterpretationModelSmall(self.config, device=self.device).to(self.device)
         if self.config.model == 'tesgan':
-            self.detail_model = find_detail_model(self.config.base_path, self.config.activation, self.config.gpt_model_size)
+            assert interp_name != None
+            self.detail_model = find_detail_model(self.config.base_path, interp_name)
             self.check_point = torch.load(self.detail_model, map_location=self.device)
             self.interpretationModel.load_state_dict(self.check_point['model']['gpt2'])
             for p in self.interpretationModel.parameters():
@@ -77,8 +78,8 @@ class Trainer:
 
 
 class TESGANTrainer(Trainer):
-    def __init__(self, config: Config, device: str, state: str):
-        super(TESGANTrainer, self).__init__(config, device, state)
+    def __init__(self, config: Config, device: str, state: str, interp_name=None):
+        super(TESGANTrainer, self).__init__(config, device, state, interp_name)
 
     def train(self):
         # for testing
