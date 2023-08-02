@@ -31,8 +31,9 @@ model/tesganP_sigmoid/*
 score/*tanh*
 score/*none*
 score/tesgan_without*
-score_appendixE/
+score_ablationStudy/
 score_caseStudy/
+score_SEMStudy/
 
 etc/draw*
 
