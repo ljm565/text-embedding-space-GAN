@@ -35,13 +35,14 @@ class Trainer:
         self.config.vocab_size = len(self.tokenizer)
 
         # dataloaders
-        DLoader = DLoader4Interpretation if self.config.model == 'interpretation' else DLoader4TESGAN
-        self.dataset = {s: DLoader(load_dataset(p), self.tokenizer, self.config) for s, p in self.data_path.items()}
-        self.dataloaders = {
-            s: DataLoader(d, self.batch_size, shuffle=True) if s == 'train' or s == 'val' else DataLoader(d,
-                                                                                                          self.batch_size,
-                                                                                                          shuffle=False)
-            for s, d in self.dataset.items()}
+        if self.state == 'train':
+            DLoader = DLoader4Interpretation if self.config.model == 'interpretation' else DLoader4TESGAN
+            self.dataset = {s: DLoader(load_dataset(p), self.tokenizer, self.config) for s, p in self.data_path.items()}
+            self.dataloaders = {
+                s: DataLoader(d, self.batch_size, shuffle=True) if s == 'train' or s == 'val' else DataLoader(d,
+                                                                                                            self.batch_size,
+                                                                                                            shuffle=False)
+                for s, d in self.dataset.items()}
 
         # model and others
         self.pad_idx = self.tokenizer.pad_token_id
@@ -80,6 +81,7 @@ class Trainer:
 class TESGANTrainer(Trainer):
     def __init__(self, config: Config, device: str, state: str, interp_name=None):
         super(TESGANTrainer, self).__init__(config, device, state, interp_name)
+        self.syn_len = config.syn_len
 
     def train(self):
         # for testing
@@ -289,7 +291,7 @@ class TESGANTrainer(Trainer):
         generator.eval()
         fake = sum([[self.tokenizer.decode(
             greedy_search(self.interpretationModel.model, self.tokenizer, generator(n.to(self.device))[j].unsqueeze(0),
-                          self.config.max_len, self.config.activation, self.device, True)[0, self.config.max_len - 1:])
+                          self.syn_len, self.config.activation, self.device, True)[0, self.config.max_len - 1:])
                           for j in range(n.size(0))] for n in fixed_noise], [])
         with open('syn/' + file_name + '.txt', 'w') as f:
             for s in fake:

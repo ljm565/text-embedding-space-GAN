@@ -62,7 +62,7 @@ def main(config_path: Config, args: ArgumentParser):
 
     elif args.mode == 'syn':
         # path needed
-        model_name = args.name
+        model_name = args.tesgan_name
         folder_name = model_name[:model_name.rfind('_')]
         model_path = 'model/' + folder_name + '/' + model_name
         assert os.path.isfile(model_path)
@@ -70,6 +70,7 @@ def main(config_path: Config, args: ArgumentParser):
         # config
         config_path = model_path[:model_path.rfind('_')] + '.json'
         config = Config(config_path)
+        config.syn_len = args.syn_len
 
         # synthesizing
         trainer = TESGANTrainer(config, device, args.mode, args.interp)
@@ -85,6 +86,7 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--mode', type=str, required=True, choices=['train', 'syn'])
     parser.add_argument('-n', '--tesgan_name', type=str, required=False)
     parser.add_argument('--interp', type=str, required=False)
+    parser.add_argument('--syn_len', default=16, type=int, required=False)
     args = parser.parse_args()
 
     main(path, args)
