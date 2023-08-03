@@ -14,6 +14,7 @@ from utils.utils_func import *
 from bert_distances import FBD
 from utils.config import Config
 from tokenizer import Tokenizer
+from self_bleu import Self_BLEU
 from language_modeling import LanguageModeling
 from multiset_distances import MultisetDistances
 from data_synthesis_ratio import DataSynthesisRatio
@@ -21,13 +22,14 @@ from models import InterpretationModel, Generator
 
 
 
-def main(dataset, args):
+def main(args):
     # path needed
     print('Initializing...')
     model = args.model
+    data = args.data
     interp = args.interp
-    trainset_path = "./data/dailydialog/processed/" + dataset.lower() + ".train"
-    testset_path = "./data/dailydialog/processed/" + dataset.lower() + ".test"
+    trainset_path = "./data/" + data.lower() + "/processed/" + data.lower() + ".train"
+    testset_path = "./data/" + data.lower() + "/processed/" + data.lower() + ".test"
     data_path = {'train': trainset_path, 'test': testset_path}
     config_path = 'model/' + model + '/' + model + '.json'
 
@@ -56,6 +58,7 @@ def main(dataset, args):
     msj = MultisetDistances(references=msj_real)
     dsr = DataSynthesisRatio(reference=train_real)
     lm = LanguageModeling(device=device)
+    sbleu = Self_BLEU(max_val=4)
 
     print('Scoring...')
     if model not in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu']:
@@ -86,12 +89,15 @@ def main(dataset, args):
 
             msj_fake = [(''.join([c for c in s])).split() for s in fake_text]
             dsr_fake = [' '.join([str(i) for i in d.cpu().tolist()]) for d in fake_tok]
+            sbleu_fake = [tokenizer.tokenize(s) for s in fake_text]
 
             scores[p]['fbd'] = fbd.get_score(sentences=fake_text)
             scores[p]['msj'] = msj.get_jaccard_score(sentences=msj_fake)
             scores[p]['dsr'] = dsr.get_dsr(sentences=dsr_fake)
             scores[p]['lm'] = lm.get_lm(sentences=fake_text)
-            print(scores)
+            scores[p]['sbleu'] = sbleu.get_sbleu(sentences=sbleu_fake)
+            print(scores[p])
+
         # save the data
         save_path = 'score/' + model + '_score.pkl'
         with open(save_path, 'wb') as f:
@@ -133,6 +139,7 @@ def main(dataset, args):
             
             fake = random.sample(fake, n_samples)
             msj_fake = [(''.join([c for c in s])).split() for s in fake]
+            sbleu_fake = [tokenizer.tokenize(s) for s in fake]
 
             for s in dsr_fake:
                 if s in trainset and len(s.split()) > 10:
@@ -142,6 +149,7 @@ def main(dataset, args):
             scores[p]['fbd'] = fbd.get_score(sentences=fake)
             scores[p]['msj'] = msj.get_jaccard_score(sentences=msj_fake)
             scores[p]['dsr'] = (dup, div, dup * div, 2 * dup * div / (dup + div))
+            scores[p]['sbleu'] = sbleu.get_sbleu(sentences=sbleu_fake)
 
             with open(p, 'r') as f:
                 lines = f.readlines()
@@ -163,8 +171,12 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--model', type=str, required=True)
     parser.add_argument('-a', '--activation', default='sigmoid', type=str, required=False,
                         choices=['sigmoid', 'tanh', 'none'])
+    parser.add_argument('--data', default=None, type=str, required=True)
     parser.add_argument('--interp', default=None, type=str, required=False)
     args = parser.parse_args()
 
+    if args.model in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu'] and args.data.lower() == 'imdb':
+        raise AssertionError(f'{args.model} only supports DailyDialog dataset')
+    
     assert os.path.isdir('model/' + args.model)
-    main('dailydialog', args)
+    main(args)

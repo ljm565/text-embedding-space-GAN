@@ -65,7 +65,6 @@ class MultisetDistances:
         return jaccard_value
 
     def get_jaccard_score(self, sentences):
-        print('Jaccard distances preprocess upto {}!'.format(self.max_n))
         ngrams_intersection, ngrams_union, ngrams_abs_diff, ngrams_added = self.get_ngram_stuff(sentences)
 
         jaccard_value = self._jaccard(ngrams_intersection=ngrams_intersection, ngrams_union=ngrams_union)
