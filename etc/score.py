@@ -25,16 +25,17 @@ from models import InterpretationModel, Generator
 def main(args):
     # path needed
     print('Initializing...')
-    model = args.model
-    data = args.data
+    model = args.model.lower()
+    data = args.data.lower()
     interp = args.interp
-    trainset_path = "./data/" + data.lower() + "/processed/" + data.lower() + ".train"
-    testset_path = "./data/" + data.lower() + "/processed/" + data.lower() + ".test"
+    trainset_path = "./data/" + data + "/processed/" + data + ".train"
+    testset_path = "./data/" + data + "/processed/" + data + ".test"
     data_path = {'train': trainset_path, 'test': testset_path}
-    config_path = 'model/' + model + '/' + model + '.json'
+    config_path = 'model/tesgan_sigmoid/tesgan_sigmoid.json' if model == 'noise' else 'model/' + model + '/' + model + '.json'
 
     # init
     n_samples = 1000
+    ref_n_samples = n_samples if data == 'dailydialog' else 10000
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     try:
         config = Config(config_path)
@@ -49,7 +50,7 @@ def main(args):
     train_real = sum([[d for d in v] for v in dataset['train']], [])
     train_real = [' '.join([str(i) for i in tokenizer.encode(s)]) for s in train_real]
     test_real = sum([[d for d in v] for v in dataset['test']], [])
-    test_real = random.sample(test_real, n_samples)
+    test_real = random.sample(test_real, ref_n_samples)
     msj_real = [(''.join([c for c in s])).split() for s in test_real]
     
     # init scores
@@ -71,32 +72,52 @@ def main(args):
 
         # load generator and fixed noise
         np.random.seed(999)
-        fixed_noise = make_noise(n_samples, config.noise_init_size)
-        fixed_noise = [fixed_noise[i * 100:(i + 1) * 100] for i in range(int(n_samples / 100))]
-        generator = Generator(config, device).to(device)
-        base_path = './model/' + model
-        model_path = [base_path + '/' + model + '_' + str(i + 1) + '.pt' for i in range(len(os.listdir(base_path)) - 1)]
-        
-        for p in tqdm(model_path):
-            scores[p] = {}
-            check_point = torch.load(p, map_location=device)
-            generator.load_state_dict(check_point['model']['generator'])
-            generator.eval()
+        if model == 'noise':
+            fixed_noise = torch.randn(n_samples, config.max_len, 768)
+            fixed_noise = [fixed_noise[i * 100:(i + 1) * 100] for i in range(int(n_samples / 100))]
             
-            fake_tok = sum([[greedy_search(gpt2.model, tokenizer, generator(n.to(device))[j].unsqueeze(0), config.max_len, config.activation, device, True)[0, config.max_len - 1:] 
-                               for j in range(n.size(0))] for n in fixed_noise], [])
+            fake_tok = sum([[greedy_search(gpt2.model, tokenizer, n[j].unsqueeze(0).to(device), config.max_len, config.activation, device, True)[0, config.max_len - 1:] 
+                               for j in range(n.size(0))] for n in fixed_noise], [])    
             fake_text = [tokenizer.decode(f) for f in fake_tok]
-
+            
             msj_fake = [(''.join([c for c in s])).split() for s in fake_text]
             dsr_fake = [' '.join([str(i) for i in d.cpu().tolist()]) for d in fake_tok]
             sbleu_fake = [tokenizer.tokenize(s) for s in fake_text]
 
-            scores[p]['fbd'] = fbd.get_score(sentences=fake_text)
-            scores[p]['msj'] = msj.get_jaccard_score(sentences=msj_fake)
-            scores[p]['dsr'] = dsr.get_dsr(sentences=dsr_fake)
-            scores[p]['lm'] = lm.get_lm(sentences=fake_text)
-            scores[p]['sbleu'] = sbleu.get_sbleu(sentences=sbleu_fake)
-            print(scores[p])
+            scores['fbd'] = fbd.get_score(sentences=fake_text)
+            scores['msj'] = msj.get_jaccard_score(sentences=msj_fake)
+            scores['dsr'] = dsr.get_dsr(sentences=dsr_fake)
+            scores['lm'] = lm.get_lm(sentences=fake_text)
+            scores['sbleu'] = sbleu.get_sbleu(sentences=sbleu_fake)
+            print(scores)
+
+        else:
+            fixed_noise = make_noise(n_samples, config.noise_init_size)
+            fixed_noise = [fixed_noise[i * 100:(i + 1) * 100] for i in range(int(n_samples / 100))]
+            generator = Generator(config, device).to(device)
+            base_path = './model/' + model
+            model_path = [base_path + '/' + model + '_' + str(i + 1) + '.pt' for i in range(len(os.listdir(base_path)) - 1)]
+            
+            for p in tqdm(model_path):
+                scores[p] = {}
+                check_point = torch.load(p, map_location=device)
+                generator.load_state_dict(check_point['model']['generator'])
+                generator.eval()
+                
+                fake_tok = sum([[greedy_search(gpt2.model, tokenizer, generator(n.to(device))[j].unsqueeze(0), config.max_len, config.activation, device, True)[0, config.max_len - 1:] 
+                                for j in range(n.size(0))] for n in fixed_noise], [])
+                fake_text = [tokenizer.decode(f) for f in fake_tok]
+
+                msj_fake = [(''.join([c for c in s])).split() for s in fake_text]
+                dsr_fake = [' '.join([str(i) for i in d.cpu().tolist()]) for d in fake_tok]
+                sbleu_fake = [tokenizer.tokenize(s) for s in fake_text]
+
+                scores[p]['fbd'] = fbd.get_score(sentences=fake_text)
+                scores[p]['msj'] = msj.get_jaccard_score(sentences=msj_fake)
+                scores[p]['dsr'] = dsr.get_dsr(sentences=dsr_fake)
+                scores[p]['lm'] = lm.get_lm(sentences=fake_text)
+                scores[p]['sbleu'] = sbleu.get_sbleu(sentences=sbleu_fake)
+                print(scores[p])
 
         # save the data
         save_path = 'score/' + model + '_score.pkl'
@@ -178,5 +199,6 @@ if __name__ == '__main__':
     if args.model in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu'] and args.data.lower() == 'imdb':
         raise AssertionError(f'{args.model} only supports DailyDialog dataset')
     
-    assert os.path.isdir('model/' + args.model)
+    if args.model.lower() != 'noise':
+        assert os.path.isdir('model/' + args.model)
     main(args)
