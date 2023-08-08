@@ -26,6 +26,9 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
 * ### [Language Model score (LM)](https://github.com/pclucas14/GansFallingShort)
     LM measures generated sample quality which means that scores of the bad samples are poor under a well-trained language model.
 
+* ### [Self-BLEU (SBL)](https://github.com/geek-ai/Texygen)
+    SBL measures diversity of the generated sample based on the token combination.
+
 * ### Data Synthesis Ratio (DSR)
     We calculate Data Synthesis Ratio (DSR) to evaluate the data memorization ratio and synthetic diversity.
     DSR is calculated as the harmonic mean of the ratio where data memorization does not occur and the ratio of diversity.
