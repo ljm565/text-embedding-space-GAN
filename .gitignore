@@ -39,10 +39,9 @@ etc/draw*
 etc/download*
 etc/make*
 
-syn/
-!syn/tesgan_sigmoid_big.txt
-!syn/tesgan_sigmoid.txt
-!syn/tesganP_sigmoid.txt
+syn/*tanh*
+syn/*without*
+syn/*none*
 
 images/
 result_figure/
