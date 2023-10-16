@@ -12,6 +12,7 @@ model/mle
 model/pgbleu
 model/seqgan
 model/rankgan
+model/mle_gpt
 
 model/*none
 model/*tanh
