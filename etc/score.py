@@ -62,7 +62,7 @@ def main(args):
     sbleu = Self_BLEU(max_val=4)
 
     print('Scoring...')
-    if model not in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu']:
+    if model not in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu', 'mle_gpt']:
         # load seed interpretation model
         torch.manual_seed(999)
         gpt2 = InterpretationModel(config, device=device).to(device)
@@ -125,8 +125,8 @@ def main(args):
             pickle.dump(scores, f)
 
 
-    elif model in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu']:
-        names = {'seqgan': 'SeqGAN', 'rankgan': 'RankGAN', 'maligan': 'MaliGAN', 'mle': 'MLE', 'pgbleu': 'PG_Bleu'}
+    elif model in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu', 'mle_gpt']:
+        names = {'seqgan': 'SeqGAN', 'rankgan': 'RankGAN', 'maligan': 'MaliGAN', 'mle': 'MLE', 'pgbleu': 'PG_Bleu', 'mle_gpt': 'MLE_GPT'}
         model_path = ['model/' + model + '/generator_sample' + str(i) + '.txt' for i in
                       range(len(list(filter(lambda x: x.startswith('generator'), os.listdir('model/' + model)))))]
 
@@ -196,7 +196,7 @@ if __name__ == '__main__':
     parser.add_argument('--interp', default=None, type=str, required=False)
     args = parser.parse_args()
 
-    if args.model in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu'] and args.data.lower() == 'imdb':
+    if args.model in ['seqgan', 'rankgan', 'maligan', 'mle', 'pgbleu', 'mle_gpt'] and args.data.lower() == 'imdb':
         raise AssertionError(f'{args.model} only supports DailyDialog dataset')
     
     if args.model.lower() != 'noise':
