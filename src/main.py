@@ -41,7 +41,7 @@ def main(config_path: Config, args: ArgumentParser):
         # types of training model
         if config.model.lower() == 'tesgan':
             config.model = 'tesgan'
-            trainer = TESGANTrainer(config, device, args.mode, args.interp)
+            trainer = TESGANTrainer(config, device, args.mode, args.interp_name)
         elif config.model.lower() == 'interpretation':
             config.model = 'interpretation'
             trainer = InterpretationTrainer(config, device, args.mode)
@@ -73,7 +73,7 @@ def main(config_path: Config, args: ArgumentParser):
         config.syn_len = args.syn_len
 
         # synthesizing
-        trainer = TESGANTrainer(config, device, args.mode, args.interp)
+        trainer = TESGANTrainer(config, device, args.mode, args.interp_name)
         trainer.syn(model_path, folder_name)
 
 
@@ -84,9 +84,9 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('-d', '--device', type=str, required=True, choices=['cpu', 'gpu'])
     parser.add_argument('-m', '--mode', type=str, required=True, choices=['train', 'syn'])
-    parser.add_argument('-n', '--tesgan_name', type=str, required=False)
-    parser.add_argument('--interp', type=str, required=False)
-    parser.add_argument('--syn_len', default=16, type=int, required=False)
+    parser.add_argument('-n', '--tesgan-name', type=str, required=False)
+    parser.add_argument('--interp-name', type=str, required=False)
+    parser.add_argument('--syn-len', default=16, type=int, required=False)
     args = parser.parse_args()
 
     main(path, args)

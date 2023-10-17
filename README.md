@@ -5,7 +5,7 @@
 <br>
 
 ## Paper
-* [TESGAN paper](https://arxiv.org/abs/2306.17181)
+* [TESGAN paper](https://arxiv.org/abs/2306.17181) (Accpeted in NEJLT)
 
 ## Introduction
 In this experiment, we apply the Generative Adversarial Networks to synthesizing text embedding space called a seed.
@@ -56,7 +56,7 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
 
 * ### Synthesized Result
     ```
-    python3 src/main.py -d gpu -m syn -n {model file name}
+    python3 src/main.py -d gpu -m syn -n {model file name} --interp-name {seed interpretation model dir}
     ```
     * After training both seed interpretation model and TESGAN, you can synthesize sentences based on your TESGAN model.
     
