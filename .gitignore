@@ -1,7 +1,6 @@
 .vscode/
 __pycache__/
 .DS_Store
-*.ipynb
 
 logs/
 score/
@@ -40,9 +39,8 @@ etc/draw*
 etc/download*
 etc/make*
 
-syn/*tanh*
-syn/*without*
-syn/*none*
+syn/*.txt
+!syn/pp
 
 images/
 result_figure/
