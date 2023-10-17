@@ -40,7 +40,6 @@ etc/download*
 etc/make*
 
 syn/*.txt
-!syn/pp
 
 images/
 result_figure/
