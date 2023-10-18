@@ -54,7 +54,7 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
 
     * For more detailed setup, you can refer *model/tesgan_sigmoid/tesgan_sigmoid.json* or *model/tesganP_sigmoid/tesganP_sigmoid.json* files.
 
-* ### Synthesized Result
+* ### Text Synthesizing
     ```
     python3 src/main.py -d gpu -m syn -n {model file name} --interp-name {seed interpretation model dir}
     ```
@@ -66,6 +66,18 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
         ```
         python3 src/main.py -d gpu -m syn -n tesgan_sigmoid_17.pt --interp-name interp_sigmoid
         ```
+
+* ### Post-processing Synthesizing Results
+    ```
+    python3 etc/pp.py --input-path {synthesized txt path} --output-path {pp output txt path}
+    ```
+    * For more realistic synthesized text, we provide the simple post-processing code.
+    
+    * For example
+        ```
+        python3 etc/pp.py --input-path syn/syn.txt --output-path syn/pp/syn.txt
+        ```
+
 ## Acknowledgement
 * [multiset_distances.py](https://github.com/ljm565/TESGAN/blob/master/etc/multiset_distances.py) and [bert_distances.py](https://github.com/ljm565/TESGAN/blob/master/etc/bert_distances.py) is based on [IAmS4n](https://github.com/IAmS4n/TextGenerationEvaluationMetrics). Many thanks for the authors.
 * [DailyDialog Dataset](https://github.com/facebookresearch/EmpatheticDialogues) were used in this experiment. Many thanks for the authors.
