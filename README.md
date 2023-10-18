@@ -64,7 +64,7 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
 
     * For example
         ```
-        python3 src/main.py -d gpu -m syn -n tesgan_sigmoid_17.pt
+        python3 src/main.py -d gpu -m syn -n tesgan_sigmoid_17.pt --interp-name interp_sigmoid
         ```
 ## Acknowledgement
 * [multiset_distances.py](https://github.com/ljm565/TESGAN/blob/master/etc/multiset_distances.py) and [bert_distances.py](https://github.com/ljm565/TESGAN/blob/master/etc/bert_distances.py) is based on [IAmS4n](https://github.com/IAmS4n/TextGenerationEvaluationMetrics). Many thanks for the authors.
