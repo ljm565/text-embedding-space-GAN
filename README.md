@@ -78,6 +78,25 @@ Additionally, unlike previous studies, TESGAN does not generate discrete tokens,
         python3 etc/pp.py --input-path syn/syn.txt --output-path syn/pp/syn.txt
         ```
 
+## Citation
+Please cite the below bibtex style.
+```
+@inproceedings{lee-ha-2023-unsupervised,
+    title = "Unsupervised Text Embedding Space Generation Using Generative Adversarial Networks for Text Synthesis",
+    author = "Lee, Jun-Min  and
+      Ha, Tae-Bin",
+    editor = "Derczynski, Leon",
+    booktitle = "Northern European Journal of Language Technology, Volume 9",
+    year = "2023",
+    address = {Link{\"o}ping, Sweden},
+    publisher = {Link{\"o}ping University Electronic Press},
+    url = "https://aclanthology.org/2023.nejlt-1.9/",
+    doi = "https://doi.org/10.3384/nejlt.2000-1533.2023.4855",
+    abstract = "Generative Adversarial Networks (GAN) is a model for data synthesis, which creates plausible data through the competition of generator and discriminator. Although GAN application to image synthesis is extensively studied, it has inherent limitations to natural language generation. Because natural language is composed of discrete tokens, a generator has difficulty updating its gradient through backpropagation; therefore, most text-GAN studies generate sentences starting with a random token based on a reward system. Thus, the generators of previous studies are pre-trained in an autoregressive way before adversarial training, causing data memorization that synthesized sentences reproduce the training data. In this paper, we synthesize sentences using a framework similar to the original GAN. More specifically, we propose Text Embedding Space Generative Adversarial Networks (TESGAN) which generate continuous text embedding spaces instead of discrete tokens to solve the gradient backpropagation problem. Furthermore, TESGAN conducts unsupervised learning which does not directly refer to the text of the training data to overcome the data memorization issue. By adopting this novel method, TESGAN can synthesize new sentences, showing the potential of unsupervised learning for text synthesis. We expect to see extended research combining Large Language Models with a new perspective of viewing text as an continuous space."
+}
+```
+
+
 ## Acknowledgement
 * [multiset_distances.py](https://github.com/ljm565/TESGAN/blob/master/etc/multiset_distances.py) and [bert_distances.py](https://github.com/ljm565/TESGAN/blob/master/etc/bert_distances.py) is based on [IAmS4n](https://github.com/IAmS4n/TextGenerationEvaluationMetrics). Many thanks for the authors.
 * [DailyDialog Dataset](https://github.com/facebookresearch/EmpatheticDialogues) were used in this experiment. Many thanks for the authors.
